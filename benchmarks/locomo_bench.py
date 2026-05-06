@@ -604,10 +604,10 @@ def llm_rerank_locomo(
 
 
 def _load_api_key(key_arg):
-    """Load API key from --llm-key arg or ANTHROPIC_API_KEY env var."""
+    """Load API key from --llm-key arg or ANTHROPIC_API_KEY_DIRECT / ANTHROPIC_API_KEY env var."""
     if key_arg:
         return key_arg
-    env_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    env_key = os.environ.get("ANTHROPIC_API_KEY_DIRECT") or os.environ.get("ANTHROPIC_API_KEY", "")
     if env_key:
         return env_key
     return ""
@@ -1044,7 +1044,7 @@ if __name__ == "__main__":
         default="claude-sonnet-4-6",
         help="Model for LLM rerank (default: claude-sonnet-4-6)",
     )
-    parser.add_argument("--llm-key", default="", help="API key (or set ANTHROPIC_API_KEY env var)")
+    parser.add_argument("--llm-key", default="", help="API key (or set ANTHROPIC_API_KEY_DIRECT / ANTHROPIC_API_KEY env var)")
     parser.add_argument(
         "--llm-backend",
         choices=["anthropic", "ollama"],

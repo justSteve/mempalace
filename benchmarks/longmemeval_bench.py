@@ -2890,10 +2890,10 @@ def llm_rerank(
 
 
 def _load_api_key(key_arg):
-    """Load API key from --llm-key arg or ANTHROPIC_API_KEY env var."""
+    """Load API key from --llm-key arg or ANTHROPIC_API_KEY_DIRECT / ANTHROPIC_API_KEY env var."""
     if key_arg:
         return key_arg
-    env_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    env_key = os.environ.get("ANTHROPIC_API_KEY_DIRECT") or os.environ.get("ANTHROPIC_API_KEY", "")
     if env_key:
         return env_key
     return ""
@@ -2984,7 +2984,7 @@ def run_benchmark(
         if needs_key and not api_key:
             print(
                 "ERROR: --llm-rerank (anthropic backend) / --mode diary requires an API key. "
-                "Set ANTHROPIC_API_KEY or use --llm-key. For ollama backend, pass "
+                "Set ANTHROPIC_API_KEY_DIRECT (or ANTHROPIC_API_KEY) or use --llm-key. For ollama backend, pass "
                 "--llm-backend ollama."
             )
             sys.exit(1)
@@ -3312,7 +3312,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--llm-key",
         default="",
-        help="Anthropic API key for LLM re-ranking. Falls back to ANTHROPIC_API_KEY env var.",
+        help="Anthropic API key for LLM re-ranking. Falls back to ANTHROPIC_API_KEY_DIRECT / ANTHROPIC_API_KEY env vars.",
     )
     parser.add_argument(
         "--llm-model",
